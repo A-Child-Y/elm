@@ -79,7 +79,7 @@ export default {
         }
       }, 1000);
       this.$axios
-        .post("/api/restapi/eus/login/mobile_send_code", {
+        .post(process.env.API_HOST + "/restapi/eus/login/mobile_send_code", {
           captcha_hash: "",
           captcha_value: "",
           mobile: this.val,
@@ -101,7 +101,7 @@ export default {
         this.msg = "请输入合法手机号";
       } else {
         this.$axios
-          .post("/api/restapi/eus/login/login_by_mobile", {
+          .post(process.env.API_HOST + "/restapi/eus/login/login_by_mobile", {
             mobile: this.val,
             scf: "ms",
             validate_code: this.code,

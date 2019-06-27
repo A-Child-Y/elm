@@ -44,7 +44,7 @@ export default {
     logOut: function() {
       let self = this;
       this.$axios
-        .post("/api/restapi/eus/login/logout", this.userData)
+        .post(process.env.API_HOST + "/restapi/eus/login/logout", this.userData)
         .then(res => {
             self.setUserId('')
           self.$router.push({ name: "mine" });

@@ -11,13 +11,6 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/localhost':{
-        target:'http://127.0.0.1:3000',
-        changeOrigin:true,
-        pathRewrite:{
-          '^/localhost':''
-        },
-      },
       '/api':{
         secure: false,
         target:'https://h5.ele.me',

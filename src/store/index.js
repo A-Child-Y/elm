@@ -7,7 +7,7 @@ export default new Vuex.Store({
     state:{
         isShow:false,
         token:'',
-        userId:'123',
+        userId:'',
         userData:{}
     },
     getters:{

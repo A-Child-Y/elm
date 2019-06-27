@@ -26,15 +26,14 @@ export default {
     let self = this;
     this.$axios
       .get(
-        "/api/restapi/bgs/poi/reverse_geo_coding?latitude=34.763461&longitude=113.706008"
+        process.env.API_HOST + "/restapi/bgs/poi/reverse_geo_coding?latitude=34.763461&longitude=113.706008"
       )
       .then(function(res) {
         self.name = res.data.name;
       });
   },
-  
-  activated(){
-    window.addEventListener("scroll", this.changeLoad)
+  activated() {
+    window.addEventListener("scroll", this.changeLoad);
   },
   deactivated() {
     window.removeEventListener("scroll", this.changeLoad);
@@ -50,7 +49,6 @@ export default {
         self.isFixed = true;
       } else {
         self.isFixed = false;
-        console.log(123, '---')
       }
     }
   }

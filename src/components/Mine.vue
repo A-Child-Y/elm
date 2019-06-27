@@ -46,7 +46,7 @@ export default {
     let self = this;
     if (this.userId) {
       this.$axios
-        .get("/api/restapi/eus/v3/users/" + this.userId + "?")
+        .get(process.env.API_HOST + "/restapi/eus/v3/users/" + this.userId + "?")
         .then(res => {
           self.setUserData(res.data)
           self.user.userName = res.data.username;

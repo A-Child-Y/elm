@@ -33,7 +33,7 @@ export default {
     let self = this;
     this.$axios
       .get(
-        "/api/restapi/shopping/v2/entries?latitude=34.763461&longitude=113.706008&templates[]=main_template&templates[]=favourable_template&templates[]=svip_template&terminal=h5"
+         process.env.API_HOST + "/restapi/shopping/v2/entries?latitude=34.763461&longitude=113.706008&templates[]=main_template&templates[]=favourable_template&templates[]=svip_template&terminal=h5"
       )
       .then(function(res) {
         self.entriesOne = res.data[0].entries.slice(0, 10);

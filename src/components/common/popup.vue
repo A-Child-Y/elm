@@ -49,7 +49,7 @@ export default {
       let self = this;
       if (e.target.innerHTML == "确定") {
         this.$axios
-          .post("/api/restapi/eus/login/mobile_send_code", {
+          .post(process.env.API_HOST + "/restapi/eus/login/mobile_send_code", {
             captcha_hash: self.hash,
             captcha_value: self.imgVal,
             mobile: this.phoneNumber,
@@ -71,7 +71,7 @@ export default {
     captcha() {
       let self = this;
       this.$axios
-        .post("/api/restapi/eus/v3/captchas", { captcha_str: self.phoneNumber })
+        .post( process.env.API_HOST + "/restapi/eus/v3/captchas", { captcha_str: self.phoneNumber })
         .then(res => {
           self.img = res.data.captcha_image;
           self.hash = res.data.captcha_hash;

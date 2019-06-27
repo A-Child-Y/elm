@@ -19,9 +19,7 @@ export default new Router({
       name: 'home',
       component: Home,
       meta:{
-        // requireAuth:true,
         keepAlive:true,
-        // isBack:true
       }
     },
     {

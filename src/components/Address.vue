@@ -26,6 +26,9 @@ export default {
     backbar,
     nonebar
   },
+  created(){
+      console.log(process.env.API_HOST, '456')
+  },
   filters:{
       strSub:function(e){
           return e.substring(0, 2) + '...'

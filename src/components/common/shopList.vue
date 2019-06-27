@@ -2,68 +2,68 @@
   <div class="shop-list" @click="$router.push({name:'details'})">
     <div v-for="(item, i) in shopList" :key="i">
       <div class="shop" v-for="(s, index) in shopList[i]" :key="index">
-      <div class="shop-img">
-        <img :src="s.restaurant.image_path | changeImg" alt>
-      </div>
-      <div class="shop-content">
-        <div class="cont-name">
-          <h4>{{s.restaurant.name}}</h4>
-          <span>...</span>
+        <div class="shop-img">
+          <img :src="s.restaurant.image_path | changeImg" alt>
         </div>
-        <div>
-          <star
-            :score="s.restaurant.rating"
-            :recentOrderNum="s.restaurant.recent_order_num"
-            :text="s.restaurant.delivery_mode? s.restaurant.delivery_mode.text:''"
-          ></star>
-        </div>
-        <div class="shop-price">
-          <div>
-            <span>￥{{s.restaurant.piecewise_agent_fee.rules[0].price}}起送</span>
-            <span>配送费￥{{s.restaurant.piecewise_agent_fee.rules[0].fee}}</span>
+        <div class="shop-content">
+          <div class="cont-name">
+            <h4>{{s.restaurant.name}}</h4>
+            <span>...</span>
           </div>
           <div>
-            <span>{{s.restaurant.distance | changeRange }}</span>
-            <span>{{s.restaurant.order_lead_time}}分钟</span>
+            <star
+              :score="s.restaurant.rating"
+              :recentOrderNum="s.restaurant.recent_order_num"
+              :text="s.restaurant.delivery_mode? s.restaurant.delivery_mode.text:''"
+            ></star>
           </div>
-        </div>
-        <div class="sort">
-          <div>{{s.restaurant.support_tags[0].text}}</div>
+          <div class="shop-price">
+            <div>
+              <span>￥{{s.restaurant.piecewise_agent_fee.rules[0].price}}起送</span>
+              <span>配送费￥{{s.restaurant.piecewise_agent_fee.rules[0].fee}}</span>
+            </div>
+            <div>
+              <span>{{s.restaurant.distance | changeRange }}</span>
+              <span>{{s.restaurant.order_lead_time}}分钟</span>
+            </div>
+          </div>
+          <div class="sort">
+            <div>{{s.restaurant.support_tags[0].text}}</div>
+            <div
+              v-show="s.restaurant.support_tags[s.restaurant.support_tags.length - 1].text == '品质联盟'"
+            >{{s.restaurant.support_tags[s.restaurant.support_tags.length - 1].text}}</div>
+            <div v-show="s.restaurant.recommend.reason == '口碑人气好店'">
+              <img :src="s.restaurant.recommend | changeImg" alt>
+              <span>{{s.restaurant.recommend.reason}}</span>
+            </div>
+          </div>
           <div
-            v-show="s.restaurant.support_tags[s.restaurant.support_tags.length - 1].text == '品质联盟'"
-          >{{s.restaurant.support_tags[s.restaurant.support_tags.length - 1].text}}</div>
-          <div v-show="s.restaurant.recommend.reason == '口碑人气好店'">
-            <img :src="s.restaurant.recommend | changeImg" alt>
-            <span>{{s.restaurant.recommend.reason}}</span>
-          </div>
-        </div>
-        <div
-          class="activities show"
-          :class="s.restaurant.activities.length + s.restaurant.supports.length == 1 ? 'one':'' "
-        >
-          <div @click.stop="changeList($event)">
-            <button
-              class="number"
-              v-show="s.restaurant.activities.length + s.restaurant.supports.length > 2"
-            >
-              {{s.restaurant.activities.length + s.restaurant.supports.length}}个活动
-              <img
-                :src="upDown"
-                alt
+            class="activities show"
+            :class="s.restaurant.activities.length + s.restaurant.supports.length == 1 ? 'one':'' "
+          >
+            <div @click.stop="changeList($event)">
+              <button
+                class="number"
+                v-show="s.restaurant.activities.length + s.restaurant.supports.length > 2"
               >
-            </button>
-          </div>
-          <div v-for="(item, index) in s.restaurant.activities" :key="index">
-            <span :style="'backgroundColor:#' + item.icon_color">{{item.icon_name}}</span>
-            <span>{{item.description | strSub}}</span>
-          </div>
-          <div v-for="(item, index) in s.restaurant.supports" :key="index + 10">
-            <span :style="'backgroundColor:#' + item.icon_color">{{item.icon_name}}</span>
-            <span>{{item.description | strSub}}</span>
+                {{s.restaurant.activities.length + s.restaurant.supports.length}}个活动
+                <img
+                  :src="upDown"
+                  alt
+                >
+              </button>
+            </div>
+            <div v-for="(item, index) in s.restaurant.activities" :key="index">
+              <span :style="'backgroundColor:#' + item.icon_color">{{item.icon_name}}</span>
+              <span>{{item.description | strSub}}</span>
+            </div>
+            <div v-for="(item, index) in s.restaurant.supports" :key="index + 10">
+              <span :style="'backgroundColor:#' + item.icon_color">{{item.icon_name}}</span>
+              <span>{{item.description | strSub}}</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
   </div>
 </template>
@@ -82,36 +82,40 @@ export default {
     };
   },
   created() {
-    this.shopPost()
-    window.addEventListener('scroll', ()=>{
-      this.shopScroll()
-    })
+    this.shopPost();
+    window.addEventListener("scroll", () => {
+      this.shopScroll();
+    });
   },
   methods: {
     changeList: function(e) {
       if (e.currentTarget.parentElement.classList[1] == "show") {
         e.currentTarget.parentElement.classList.remove("show");
-        this.upDown = "../../../static/up.png";
+        e.currentTarget.parentElement.children[0].children[0].children[0].src =
+          "../../../static/up.png";
       } else {
         e.currentTarget.parentElement.classList.add("show");
-        this.upDown = "../../../static/down.png";
+        e.currentTarget.parentElement.children[0].children[0].children[0].src =
+          "../../../static/down.png";
       }
     },
     shopPost: function() {
       let self = this;
-      this.$axios.get("/localhost/news.json").then(res => {
-       
-        // self.shopList=res.data.items;
-        self.shopList.push(res.data.items)
-        console.log(self.shopList)
+      this.$axios.get(process.env.API_HOST + "/restapi/shopping/v3/restaurants?latitude=34.864261&longitude=113.60957&offset=0&limit=8&extras[]=activities&extras[]=tags&extra_filters=home&rank_id=&terminal=h5").then(res => {
+        self.shopList.push(res.data.items);
       });
     },
-    shopScroll:function () {
-      let scrollH = document.body.scrollTop || document.documentElement.scrollTop;
-      let docH = document.body.scrollHeight || document.documentElement.scrollHeight
-      let windowH = window.innerHeight || document.body.clientHeight || document.documentElement.clientHeight
-      if(scrollH + windowH >= docH){
-        this.shopPost()
+    shopScroll: function() {
+      let scrollH =
+        document.body.scrollTop || document.documentElement.scrollTop;
+      let docH =
+        document.body.scrollHeight || document.documentElement.scrollHeight;
+      let windowH =
+        window.innerHeight ||
+        document.body.clientHeight ||
+        document.documentElement.clientHeight;
+      if (scrollH + windowH >= docH) {
+        this.shopPost();
       }
     }
   }
@@ -215,7 +219,7 @@ export default {
 }
 
 .show {
-  height: 50px;
+  height: 55px;
   overflow: hidden;
 }
 .activities div {
